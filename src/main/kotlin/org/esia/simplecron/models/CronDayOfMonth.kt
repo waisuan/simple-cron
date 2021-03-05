@@ -16,10 +16,10 @@ data class CronDayOfMonth(override val value: String, override val name: String 
     }
 
     override fun expandRange(): String {
-        return CronParserHelper.rangeExpressionParser(value, days)
+        return CronParserHelper.parseRangeExpression(value, days)
     }
 
     override fun expandStep(): String {
-        return CronParserHelper.stepExpressionParser(value, days)
+        return CronParserHelper.parseStepExpression(value, days)
     }
 }

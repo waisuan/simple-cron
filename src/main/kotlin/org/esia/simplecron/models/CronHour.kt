@@ -16,10 +16,10 @@ data class CronHour(override val value: String, override val name: String = "hou
     }
 
     override fun expandRange(): String {
-        return CronParserHelper.rangeExpressionParser(value, hours)
+        return CronParserHelper.parseRangeExpression(value, hours)
     }
 
     override fun expandStep(): String {
-        return CronParserHelper.stepExpressionParser(value, hours)
+        return CronParserHelper.parseStepExpression(value, hours)
     }
 }
