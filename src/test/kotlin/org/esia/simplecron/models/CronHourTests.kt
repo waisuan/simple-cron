@@ -1,5 +1,6 @@
 package org.esia.simplecron.models
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -54,5 +55,13 @@ class CronHourTests {
         CronHour("23").let {
             assertThat(it.expandIndividual()).isEqualTo("23")
         }
+    }
+
+    @Test
+    fun `throws an exception if given an unrecognized hour pattern`() {
+        Assertions.assertThatThrownBy { CronHour("24") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronHour("-1") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronHour("A") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronHour("-1,100") }.isInstanceOf(IllegalArgumentException::class.java)
     }
 }

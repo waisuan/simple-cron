@@ -1,5 +1,6 @@
 package org.esia.simplecron.models
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -78,5 +79,13 @@ class CronDayOfWeekTests {
         CronDayOfWeek("6").let {
             assertThat(it.expandIndividual()).isEqualTo("6")
         }
+    }
+
+    @Test
+    fun `throws an exception if given an unrecognized day of week pattern`() {
+        Assertions.assertThatThrownBy { CronDayOfWeek("7") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfWeek("-1") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfWeek("ABC") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfWeek("-1,100") }.isInstanceOf(IllegalArgumentException::class.java)
     }
 }

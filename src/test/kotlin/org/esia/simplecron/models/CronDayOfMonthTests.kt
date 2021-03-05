@@ -1,5 +1,6 @@
 package org.esia.simplecron.models
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -54,5 +55,13 @@ class CronDayOfMonthTests {
         CronDayOfMonth("31").let {
             assertThat(it.expandIndividual()).isEqualTo("31")
         }
+    }
+
+    @Test
+    fun `throws an exception if given an unrecognized day of month pattern`() {
+        Assertions.assertThatThrownBy { CronDayOfMonth("32") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfMonth("-1") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfMonth("A") }.isInstanceOf(IllegalArgumentException::class.java)
+        Assertions.assertThatThrownBy { CronDayOfMonth("-1,100") }.isInstanceOf(IllegalArgumentException::class.java)
     }
 }

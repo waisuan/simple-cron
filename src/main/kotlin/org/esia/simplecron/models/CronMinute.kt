@@ -1,6 +1,5 @@
 package org.esia.simplecron.models
 
-import org.esia.simplecron.exceptions.UnrecognizedExpressionException
 import org.esia.simplecron.utils.CronParserHelper
 import org.esia.simplecron.utils.CronParserValidator
 import org.esia.simplecron.utils.spaceDelimited
@@ -9,13 +8,7 @@ data class CronMinute(override val value: String, override val name: String = "m
     private val minutes = 0..59
 
     init {
-        // TODO: With the interest of time, the following is to showcase how/where we'd implement a validation layer on top
-        // of these Cron models. In this case, we'd need to extent it further to cover more cases.
-        CronParserValidator.validateNumeric(value).let { matchResult ->
-            if (!matchResult) {
-                throw UnrecognizedExpressionException()
-            }
-        }
+        require(CronParserValidator.validate(value, "([0-9]|[1-5][0-9])"))
     }
 
     override fun expandAny(): String {

@@ -1,11 +1,16 @@
 package org.esia.simplecron.models
 
 import kotlin.math.max
+import org.esia.simplecron.utils.CronParserValidator
 import org.esia.simplecron.utils.spaceDelimited
 
 data class CronDayOfWeek(override val value: String, override val name: String = "day of week") : CronType(value, name) {
     private val days = 0..6
     private val daysAlt = listOf("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT")
+
+    init {
+        require(CronParserValidator.validate(value, "([0-6]|${daysAlt.joinToString("|")})"))
+    }
 
     override fun expandAny(): String {
         return days.spaceDelimited()

@@ -2,7 +2,6 @@ package org.esia.simplecron.models
 
 import io.mockk.spyk
 import io.mockk.verify
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 
 class CronTypeTests {
@@ -56,11 +55,5 @@ class CronTypeTests {
         verify {
             mockCronType.expandIndividual()
         }
-    }
-
-    @Test
-    fun `expand will throw an exception if expression is unrecognized`() {
-        val mockCronType = spyk(CronHour("######"))
-        assertThatThrownBy { mockCronType.expand() }.hasMessageContaining("Unrecognized")
     }
 }

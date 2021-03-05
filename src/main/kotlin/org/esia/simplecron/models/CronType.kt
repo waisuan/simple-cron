@@ -27,10 +27,10 @@ abstract class CronType(open val value: String, open val name: String) {
     fun expand(): String {
         return when {
             value == CronSymbols.ANY.actualValue -> expandAny()
-            Regex(CronParserValidator.alphaNumericSeparatorPattern).matches(value) -> expandSeparator()
-            Regex(CronParserValidator.alphaNumericRangePattern).matches(value) -> expandRange()
-            Regex(CronParserValidator.alphaNumericStepPattern).matches(value) -> expandStep()
-            Regex(CronParserValidator.alphaNumericPattern).matches(value) -> expandIndividual()
+            CronParserValidator.isSeparatorPattern(value) -> expandSeparator()
+            CronParserValidator.isRangePattern(value) -> expandRange()
+            CronParserValidator.isStepPattern(value) -> expandStep()
+            CronParserValidator.isIndividualPattern(value) -> expandIndividual()
             else -> throw UnrecognizedExpressionException()
         }
     }

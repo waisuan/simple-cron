@@ -1,11 +1,15 @@
 package org.esia.simplecron.models
 
-import kotlin.math.max
+import org.esia.simplecron.utils.CronParserValidator
 import org.esia.simplecron.utils.spaceDelimited
 
 data class CronMonth(override val value: String, override val name: String = "month") : CronType(value, name) {
     private val months = 1..12
     private val monthsAlt = listOf("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")
+
+    init {
+        require(CronParserValidator.validate(value, "([1-9]|[1][0-2]|${monthsAlt.joinToString("|")})"))
+    }
 
     override fun expandAny(): String {
         return months.spaceDelimited()
@@ -22,7 +26,7 @@ data class CronMonth(override val value: String, override val name: String = "mo
     override fun expandStep(): String {
         return value.split(CronSymbols.STEP.actualValue).let { (rawMonth, rawMonthStep) ->
             // To capture cases where the given step is of zero value
-            val monthStep = max(rawMonthStep.toIntOrNull() ?: monthsAlt.indexOf(rawMonthStep) + 1, 1)
+            val monthStep = rawMonthStep.toIntOrNull() ?: monthsAlt.indexOf(rawMonthStep) + 1
             if (rawMonth == CronSymbols.ANY.actualValue) {
                 (months.first..months.last step monthStep).spaceDelimited()
             } else {
